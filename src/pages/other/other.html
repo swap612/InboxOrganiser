@@ -1,0 +1,18 @@
+
+<ion-header>
+
+    <ion-navbar color="primary">
+      <ion-title>Other messages</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+    <ion-list>
+      <ion-item *ngFor="let x of otherMsg" (click)="goToSmsDetailPage(x.address,x.body)">
+        <h2>{{x.address}}</h2>
+        <p>{{x.body}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
