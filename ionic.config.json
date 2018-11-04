@@ -1,0 +1,7 @@
+{
+  "name": "Sms-fetch",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
