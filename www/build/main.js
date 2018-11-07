@@ -258,11 +258,13 @@ var HomePage = /** @class */ (function () {
         this.persMsg = [];
         platform.ready().then(function (readySource) {
             _this.ReadSMSList();
+            console.log('loaded Messages');
+            //classify sms
+            // this.classifyMessages();
+            // console.log('classified Messages');
         }, function (err) {
             console.log("Error Device not ready");
         });
-        console.log('loaded persMessages');
-        this.persMsg = smsservice.personalMsg;
     }
     HomePage.prototype.checkPermission = function () {
         var _this = this;
@@ -284,20 +286,53 @@ var HomePage = /** @class */ (function () {
         var filter = {
             box: 'inbox',
             indexFrom: 0,
-            maxCount: 200,
+            maxCount: 100,
         };
         if (SMS)
             SMS.listSMS(filter, function (ListSms) {
-                //alert(JSON.stringify(ListSms))
                 _this.messages = ListSms;
-                _this.smsservice.personalMsg = ListSms;
-                _this.smsservice.transactionMsg = ListSms;
-                _this.smsservice.otherMsg = ListSms;
+                // this.smsservice.personalMsg = ListSms
+                // this.smsservice.transactionMsg = ListSms
+                // this.smsservice.otherMsg=ListSms
+                // classify the messages
+                _this.classifyMessages();
             }, function (Error) {
                 alert(JSON.stringify(Error));
             });
-        //  });
-        // this.persMsg = this.smsservice.personalMsg;
+    };
+    HomePage.prototype.classifyMessages = function () {
+        console.log('inside classify Messages');
+        // classify the messages
+        if (Array.isArray(this.messages)) {
+            console.log("inside array");
+            for (var i in this.messages) {
+                console.log("inside for");
+                var smsFilter = this.messages[i];
+                console.log("" + smsFilter.address);
+                var regexPersonal = /^\+[0-9]{10,}/;
+                console.log("" + smsFilter.address + "return " + regexPersonal.test(smsFilter.address));
+                if (regexPersonal.test(smsFilter.address)) {
+                    console.log("" + smsFilter.address + "added to personal");
+                    this.persMsg.push(smsFilter);
+                }
+                else {
+                    //Transactional Messages
+                    //Pattern for transactional msgs
+                    var regexTransactional = /(credited| debited|UPI-Collectrequest|sbcollect)/i;
+                    console.log("" + smsFilter.body + "return " + regexPersonal.test(smsFilter.body));
+                    if (regexTransactional.test(smsFilter.body)) {
+                        console.log("" + smsFilter.address + "added to transactional");
+                        this.smsservice.transactionMsg.push(smsFilter);
+                    }
+                    else {
+                        //Other Messages
+                        console.log("" + smsFilter.address + "added to others");
+                        this.smsservice.otherMsg.push(smsFilter);
+                    }
+                }
+            }
+            console.log("outside for");
+        }
     };
     //Display message in detail
     HomePage.prototype.goToSmsDetailPage = function (addr, body) {
@@ -309,7 +344,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/swapnil/IonicApps/new-sms/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Personal Messages\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <ion-item *ngFor="let msg of messages" (click)="goToSmsDetailPage(msg.address,msg.body)" >\n      <h2>{{msg.address}}</h2>\n      <p>{{msg.body}}</p>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/swapnil/IonicApps/new-sms/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/home/swapnil/IonicApps/new-sms/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-title>\n      Personal Messages\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <ion-item *ngFor="let msg of persMsg" (click)="goToSmsDetailPage(msg.address,msg.body)" >\n      <h2>{{msg.address}}</h2>\n      <p>{{msg.body}}</p>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/swapnil/IonicApps/new-sms/src/pages/home/home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_3__providers_sms_list_sms_list__["a" /* SmsListProvider */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_android_permissions__["a" /* AndroidPermissions */]])
     ], HomePage);
@@ -490,29 +525,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-/**
- * Generated class for the SmsDetailedPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 var SmsDetailedPage = /** @class */ (function () {
     function SmsDetailedPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        console.log("Inside sms detail()");
+        // console.log("Inside sms detail()")
         this.msg_address = navParams.get('messageAddr');
         this.msg_body = navParams.get('messageBody');
-        console.log("Message detaisl are" + this.msg_address + "Body:" + this.msg_body);
-        //  let msg_addr = navParams.get('addr');
-        //  let msg_body = navParams.get('body');
+        // console.log("Message detaisl are"+ this.msg_address + "Body:"+ this.msg_body)
     }
     SmsDetailedPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad SmsDetailedPage');
     };
     SmsDetailedPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-sms-detailed',template:/*ion-inline-start:"/home/swapnil/IonicApps/new-sms/src/pages/sms-detailed/sms-detailed.html"*/'\n<ion-header>\n\n  <ion-navbar color="primary">\n      <ion-title>{{msg_address}}</ion-title>\n\n    <!-- <ion-title>{{msg_detail.address}}</ion-title> -->\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-card>\n      <ion-card-content background-color="light">\n         {{msg_body}}\n      </ion-card-content>  <!-- <p>{{msg_detail.body}}</p> -->\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/swapnil/IonicApps/new-sms/src/pages/sms-detailed/sms-detailed.html"*/,
+            selector: 'page-sms-detailed',template:/*ion-inline-start:"/home/swapnil/IonicApps/new-sms/src/pages/sms-detailed/sms-detailed.html"*/'\n<ion-header>\n\n  <ion-navbar color="primary">\n    <ion-title>{{msg_address}}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-card>\n      <ion-card-content background-color="light">\n         {{msg_body}}\n      </ion-card-content>  <!-- <p>{{msg_detail.body}}</p> -->\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/swapnil/IonicApps/new-sms/src/pages/sms-detailed/sms-detailed.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
     ], SmsDetailedPage);
