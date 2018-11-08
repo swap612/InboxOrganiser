@@ -16,7 +16,8 @@ export class HomePage {
   persMsg: any = [];
   constructor(public platform: Platform, public navCtrl: NavController, public smsservice: SmsListProvider, public androidPermissions: AndroidPermissions) {
     platform.ready().then((readySource) => {
-      this.ReadSMSList();
+      this.checkPermission();
+      // this.ReadSMSList();
       console.log('loaded Messages');
       //classify sms
       // this.classifyMessages();
@@ -29,22 +30,22 @@ export class HomePage {
 
   checkPermission() {
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.READ_SMS).then(success => {
+      console.log('inside check permission');
+      //  this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.READ_SMS]);
+      this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_SMS).then(success => {
+        //this.ReadSMSList();
+        console.log('inside request permission');
+        this.ReadSMSList();
+      },
+        err => {
+          console.log('inside request permission cancel');
+        });
 
-      //if permission granted
-      this.ReadSMSList();
     },
       err => {
+        console.log('inside check permission cancel');
 
-        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_SMS).then(success => {
-          this.ReadSMSList();
-        },
-          err => {
-            alert("cancelled")
-          });
       });
-
-    this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.READ_SMS]);
-
   }
 
   ReadSMSList() {
@@ -80,26 +81,25 @@ export class HomePage {
       console.log("inside array");
 
       for (var i in this.messages) {
-        console.log("inside for");
 
         var smsFilter = this.messages[i];
         console.log("" + smsFilter.address);
         var regexPersonal = /^\+[0-9]{10,}/;
-        var regexOther = /( missed call| missed calls|Dear Customer| offer| from +)/i;
+        var regexOther = /( missed call| missed calls|offer| from +)/i;
         var regexReminder = /( due by| due on| mticket| PNR)/i;
         var regexReminder2 = /^PNR/i;
-        
-        
+
+
         console.log("" + smsFilter.address + "return " + regexPersonal.test(smsFilter.address));
 
         //Personal Messages
         if (regexPersonal.test(smsFilter.address)) {
-          
+
           if (regexOther.test(smsFilter.body)) {
             console.log("" + smsFilter.address + "added to others");
             this.smsservice.otherMsg.push(smsFilter);
           }
-          else { 
+          else {
             this.persMsg.push(smsFilter);
             console.log("" + smsFilter.address + "added to personal");
           }
@@ -108,7 +108,7 @@ export class HomePage {
         else {
           //Transactional Messages
           //Pattern for transactional msgs
-          var regexTransactional = /(credited| debited|UPI-Collectrequest|sbcollect)/i ;
+          var regexTransactional = /(credited| debited|UPI-Collectrequest|sbcollect|collect request)/i;
           console.log("" + smsFilter.body + "return " + regexPersonal.test(smsFilter.body));
           if (regexTransactional.test(smsFilter.body)) {
             console.log("" + smsFilter.address + "added to transactional");
@@ -126,7 +126,7 @@ export class HomePage {
           }
         }
       }
-      console.log("outside for");
+
 
     }
   }
