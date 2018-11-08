@@ -3,13 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SmsDetailedPage } from '../sms-detailed/sms-detailed';
 import { SmsListProvider } from '../../providers/sms-list/sms-list';
 
-/**
- * Generated class for the OtherPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-other',

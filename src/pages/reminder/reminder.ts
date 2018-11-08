@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SmsListProvider } from '../../providers/sms-list/sms-list';
+import { SmsDetailedPage } from '../sms-detailed/sms-detailed';
 
 @IonicPage()
 @Component({
@@ -18,4 +19,13 @@ export class ReminderPage {
     console.log('ionViewDidLoad ReminderPage');
   }
 
+   //Display message in detail
+   goToSmsDetailPage(addr, body) {
+    console.log("onclick sms detailed page");
+
+    this.navCtrl.push(SmsDetailedPage, {
+      messageAddr: addr,
+      messageBody: body
+    });
+  }
 }

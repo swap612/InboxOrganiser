@@ -49,8 +49,6 @@ export class HomePage {
 
   ReadSMSList() {
 
-    //this.platform.ready().then((readySource) => {
-
     let filter = {
       box: 'inbox', // 'inbox' (default), 'sent', 'draft'
       indexFrom: 0, // start from index 0
@@ -87,8 +85,11 @@ export class HomePage {
         var smsFilter = this.messages[i];
         console.log("" + smsFilter.address);
         var regexPersonal = /^\+[0-9]{10,}/;
-        var regexOther = /( missed call| missed calls|Dear Customer| from +)/i;
-
+        var regexOther = /( missed call| missed calls|Dear Customer| offer| from +)/i;
+        var regexReminder = /( due by| due on)/i;
+        var regexReminder2 = /^PNR/i;
+        
+        
         console.log("" + smsFilter.address + "return " + regexPersonal.test(smsFilter.address));
 
         //Personal Messages
@@ -98,10 +99,9 @@ export class HomePage {
             console.log("" + smsFilter.address + "added to others");
             this.smsservice.otherMsg.push(smsFilter);
           }
-          else{
+          else { 
             this.persMsg.push(smsFilter);
             console.log("" + smsFilter.address + "added to personal");
-
           }
         }
 
@@ -114,7 +114,10 @@ export class HomePage {
             console.log("" + smsFilter.address + "added to transactional");
             this.smsservice.transactionMsg.push(smsFilter);
           }
-
+          else if (regexReminder.test(smsFilter.body) || regexReminder2.test(smsFilter.body)) {
+            console.log("" + smsFilter.address + "added to reminders");
+            this.smsservice.reminderMsg.push(smsFilter);
+          }
           else {
             //Other Messages
             console.log("" + smsFilter.address + "added to others");
