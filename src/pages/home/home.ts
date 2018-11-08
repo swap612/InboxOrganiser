@@ -52,7 +52,7 @@ export class HomePage {
     let filter = {
       box: 'inbox', // 'inbox' (default), 'sent', 'draft'
       indexFrom: 0, // start from index 0
-      maxCount: 500, // count of SMS to return each time
+      maxCount: 2000, // count of SMS to return each time
     };
 
     if (SMS)
@@ -86,7 +86,7 @@ export class HomePage {
         console.log("" + smsFilter.address);
         var regexPersonal = /^\+[0-9]{10,}/;
         var regexOther = /( missed call| missed calls|Dear Customer| offer| from +)/i;
-        var regexReminder = /( due by| due on)/i;
+        var regexReminder = /( due by| due on| mticket| PNR)/i;
         var regexReminder2 = /^PNR/i;
         
         
