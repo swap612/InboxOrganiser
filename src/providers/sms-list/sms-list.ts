@@ -11,7 +11,8 @@ import { Injectable } from '@angular/core';
 export class SmsListProvider {
   personalMsg: any = [];
   transactionMsg: any = [];
-  otherMsg: any =[];
+  otherMsg: any = [];
+  reminderMsg: any = [];
   
   constructor(public http: HttpClient) {
     console.log('Hello SmsListProvider Provider');

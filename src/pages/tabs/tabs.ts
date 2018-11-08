@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TransactionsPage } from '../transactions/transactions';
 import { HomePage } from '../home/home';
 import { OtherPage } from '../other/other';
+import { ReminderPage } from '../reminder/reminder';
 
 /**
  * Generated class for the TabsPage page.
@@ -21,6 +22,7 @@ export class TabsPage {
   transactionPage = TransactionsPage;
   personalPage = HomePage;
   otherPage = OtherPage;
+  reminderPage =ReminderPage;
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad TabsPage');

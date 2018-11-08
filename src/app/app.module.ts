@@ -14,6 +14,7 @@ import { SmsListProvider } from '../providers/sms-list/sms-list';
 import { HttpClientModule } from '@angular/common/http'; 
 import { SmsDetailedPage } from '../pages/sms-detailed/sms-detailed';
 import { OtherPage } from '../pages/other/other';
+import { ReminderPage } from '../pages/reminder/reminder';
 @NgModule({
   declarations: [
     MyApp,
@@ -21,7 +22,8 @@ import { OtherPage } from '../pages/other/other';
     TabsPage,
     TransactionsPage,
     SmsDetailedPage,
-    OtherPage
+    OtherPage,
+    ReminderPage
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,8 @@ import { OtherPage } from '../pages/other/other';
     TabsPage,
     TransactionsPage,
     SmsDetailedPage,
-    OtherPage
+    OtherPage,
+    ReminderPage
   ],
   providers: [
     AndroidPermissions,
