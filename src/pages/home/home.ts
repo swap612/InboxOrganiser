@@ -54,7 +54,7 @@ export class HomePage {
     let filter = {
       box: 'inbox', // 'inbox' (default), 'sent', 'draft'
       indexFrom: 0, // start from index 0
-      maxCount: 100, // count of SMS to return each time
+      maxCount: 500, // count of SMS to return each time
     };
 
     if (SMS)
@@ -87,11 +87,22 @@ export class HomePage {
         var smsFilter = this.messages[i];
         console.log("" + smsFilter.address);
         var regexPersonal = /^\+[0-9]{10,}/;
+        var regexOther = /( missed call| missed calls|Dear Customer| from +)/i;
+
         console.log("" + smsFilter.address + "return " + regexPersonal.test(smsFilter.address));
 
+        //Personal Messages
         if (regexPersonal.test(smsFilter.address)) {
-          console.log("" + smsFilter.address + "added to personal");
-          this.persMsg.push(smsFilter);
+          
+          if (regexOther.test(smsFilter.body)) {
+            console.log("" + smsFilter.address + "added to others");
+            this.smsservice.otherMsg.push(smsFilter);
+          }
+          else{
+            this.persMsg.push(smsFilter);
+            console.log("" + smsFilter.address + "added to personal");
+
+          }
         }
 
         else {
