@@ -9,10 +9,16 @@ import { SmsListProvider } from '../../providers/sms-list/sms-list';
   templateUrl: 'other.html',
 })
 export class OtherPage {
-  otherMsg:any=[]
+  otherMsg:any=[];
+  otherMsg2:any=[];
+  turn:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public smsservice: SmsListProvider) {
     console.log('const othersPage');
-    this.otherMsg = smsservice.otherMsg;
+    // this.otherMsg2 = smsservice.otherMsg;
+    this.turn =0;
+    for (let i = 0; i < 30; i++) {
+      this.otherMsg2.push(smsservice.otherMsg[i] );
+    }
   }
 
   ionViewDidLoad() {
@@ -27,5 +33,20 @@ export class OtherPage {
       messageAddr: addr,
       messageBody: body
     });
+  }
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+     this.turn++;
+     console.log('turn:'+this.turn);
+    setTimeout(() => {
+
+      for (let i = 0; i < 30; i++) {
+        this.otherMsg2.push(this.smsservice.otherMsg[30*this.turn+i] );
+      }
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 50);
   }
 }

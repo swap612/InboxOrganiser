@@ -4,7 +4,6 @@ import { SmsDetailedPage } from './sms-detailed';
 
 @NgModule({
   declarations: [
-    SmsDetailedPage,
   ],
   imports: [
     IonicPageModule.forChild(SmsDetailedPage),

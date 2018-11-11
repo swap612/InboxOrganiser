@@ -4,6 +4,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Platform } from 'ionic-angular';
 import { SmsListProvider } from '../../providers/sms-list/sms-list';
 import { SmsDetailedPage } from '../sms-detailed/sms-detailed';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 declare var SMS: any;
 
@@ -11,20 +12,35 @@ declare var SMS: any;
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
 export class HomePage {
   messages: any = [];
+  persMsg2: any = [];
   persMsg: any = [];
-  constructor(public platform: Platform, public navCtrl: NavController, public smsservice: SmsListProvider, public androidPermissions: AndroidPermissions) {
+
+  turn:any ;
+  constructor(public platform: Platform, public navCtrl: NavController, public smsservice: SmsListProvider,public splashScreen: SplashScreen, public androidPermissions: AndroidPermissions) {
+    // splashScreen.show();
+    console.log('showing splash screen');
     platform.ready().then((readySource) => {
+    //  splashScreen.show();
+     console.log('showing splash screen');
+
       this.checkPermission();
       // this.ReadSMSList();
       console.log('loaded Messages');
       //classify sms
       // this.classifyMessages();
       // console.log('classified Messages');
+     
     }, err => {
       console.log("Error Device not ready");
     });
+
+    // this.turn =0;
+    // for (let i = 0; i < 30; i++) {
+    //   this.persMsg.push(smsservice.personalMsg[i] );
+    // }
 
   }
 
@@ -61,9 +77,6 @@ export class HomePage {
 
         this.messages = ListSms
 
-        // this.smsservice.personalMsg = ListSms
-        // this.smsservice.transactionMsg = ListSms
-        // this.smsservice.otherMsg=ListSms
         // classify the messages
         this.classifyMessages();
 
@@ -83,25 +96,26 @@ export class HomePage {
       for (var i in this.messages) {
 
         var smsFilter = this.messages[i];
-        console.log("" + smsFilter.address);
+        // console.log("" + smsFilter.address);
         var regexPersonal = /^\+[0-9]{10,}/;
         var regexOther = /( missed call| missed calls|offer| from +)/i;
         var regexReminder = /( due by| due on| mticket| PNR)/i;
         var regexReminder2 = /^PNR/i;
 
 
-        console.log("" + smsFilter.address + "return " + regexPersonal.test(smsFilter.address));
+        // console.log("" + smsFilter.address + "return " + regexPersonal.test(smsFilter.address));
 
         //Personal Messages
         if (regexPersonal.test(smsFilter.address)) {
 
           if (regexOther.test(smsFilter.body)) {
-            console.log("" + smsFilter.address + "added to others");
+            // console.log("" + smsFilter.address + "added to others");
             this.smsservice.otherMsg.push(smsFilter);
           }
           else {
+            // this.smsservice.personalMsg.push(smsFilter);
             this.persMsg.push(smsFilter);
-            console.log("" + smsFilter.address + "added to personal");
+            // console.log("" + smsFilter.address + "added to personal");
           }
         }
 
@@ -109,18 +123,18 @@ export class HomePage {
           //Transactional Messages
           //Pattern for transactional msgs
           var regexTransactional = /(credited| debited|UPI-Collectrequest|sbcollect|collect request)/i;
-          console.log("" + smsFilter.body + "return " + regexPersonal.test(smsFilter.body));
+          // console.log("" + smsFilter.body + "return " + regexPersonal.test(smsFilter.body));
           if (regexTransactional.test(smsFilter.body)) {
-            console.log("" + smsFilter.address + "added to transactional");
+            // console.log("" + smsFilter.address + "added to transactional");
             this.smsservice.transactionMsg.push(smsFilter);
           }
           else if (regexReminder.test(smsFilter.body) || regexReminder2.test(smsFilter.body)) {
-            console.log("" + smsFilter.address + "added to reminders");
+            // console.log("" + smsFilter.address + "added to reminders");
             this.smsservice.reminderMsg.push(smsFilter);
           }
           else {
             //Other Messages
-            console.log("" + smsFilter.address + "added to others");
+            // console.log("" + smsFilter.address + "added to others");
             this.smsservice.otherMsg.push(smsFilter);
 
           }
@@ -129,6 +143,8 @@ export class HomePage {
 
 
     }
+    console.log('hiding splash screen');
+    // this.splashScreen.hide();
   }
 
   //Display message in detail
@@ -140,4 +156,21 @@ export class HomePage {
       messageBody: body
     });
   }
+
+  //
+  // doInfinite(infiniteScroll) {
+  //   console.log('Begin async operation');
+  //    this.turn++;
+  //    console.log('turn:'+this.turn);
+  //   setTimeout(() => {
+
+  //     for (let i = 0; i < 30; i++) {
+  //       this.persMsg.push(this.smsservice.personalMsg[30*this.turn+i] );
+  //     }
+
+  //     console.log('Async operation has ended');
+  //     infiniteScroll.complete();
+  //   }, 50);
+  // }
+
 }

@@ -4,7 +4,7 @@ import { OtherPage } from './other';
 
 @NgModule({
   declarations: [
-    OtherPage,
+    
   ],
   imports: [
     IonicPageModule.forChild(OtherPage),

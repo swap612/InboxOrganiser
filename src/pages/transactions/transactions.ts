@@ -3,12 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SmsListProvider } from '../../providers/sms-list/sms-list';
 import { SmsDetailedPage } from '../sms-detailed/sms-detailed';
 
-/**
- * Generated class for the TransactionsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -16,10 +10,16 @@ import { SmsDetailedPage } from '../sms-detailed/sms-detailed';
   templateUrl: 'transactions.html',
 })
 export class TransactionsPage {
-  transMsg: any = []
+  transMsg: any = [];
+  turn:any ;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public smsservice: SmsListProvider) {
     console.log('const TransactionsPage');
-    this.transMsg = smsservice.transactionMsg;
+    // this.transMsg = smsservice.transactionMsg;
+    this.turn = 0;
+    for (let i = 0; i < 30; i++) {
+      this.transMsg.push(smsservice.transactionMsg[i] );
+    }
   }
 
   ionViewDidLoad() {
@@ -35,4 +35,22 @@ export class TransactionsPage {
       messageBody: body
     });
   }
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+     this.turn++;
+     console.log('turn:'+this.turn);
+    setTimeout(() => {
+
+      for (let i = 0; i < 30; i++) {
+        this.transMsg.push(this.smsservice.transactionMsg[30*this.turn+i] );
+      }
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 50);
+  }
+
+
+
 }

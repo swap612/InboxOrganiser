@@ -10,9 +10,11 @@ import { SmsDetailedPage } from '../sms-detailed/sms-detailed';
 })
 export class ReminderPage {
   remMsg: any = [];
-
+  turn:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public smsservice: SmsListProvider) {
     this.remMsg = smsservice.reminderMsg;
+
+   
   }
 
   ionViewDidLoad() {
@@ -28,4 +30,6 @@ export class ReminderPage {
       messageBody: body
     });
   }
+
+
 }

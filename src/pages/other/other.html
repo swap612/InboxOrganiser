@@ -1,23 +1,37 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Other Messages</ion-title>
+    <ion-title>Other </ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
+<!-- 
 <ion-content padding>
-  <!-- <ion-scroll style="width:100%;height:100%" scrollY="true" > -->
-      <!-- <ion-list [virtualScroll]="otherMsg"> -->
 
     <ion-list >
       <ion-item *ngFor="let x of otherMsg" (click)="goToSmsDetailPage(x.address,x.body)">
-        <!-- <ion-item *virtualItem="let x" (click)="goToSmsDetailPage(x.address,x.body)"> -->
         <h2>{{x.address}}</h2>
         <p>{{x.body}}</p>
       </ion-item>
     </ion-list>
-  <!-- </ion-scroll> -->
+ </ion-content> -->
+
+
+ <ion-content padding>
+  <ion-list >
+    <ion-item *ngFor="let x of otherMsg2" (click)="goToSmsDetailPage(x.address,x.body)">
+      <h2>{{x.address}}</h2>
+      <p>{{x.body}}</p>
+    </ion-item>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+   
+
+
+  </ion-list>
+<!-- </ion-scroll> -->
 
 </ion-content>

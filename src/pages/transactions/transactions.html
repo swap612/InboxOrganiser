@@ -2,7 +2,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Transactional Messages</ion-title>
+    <ion-title>Transactional </ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,4 +15,9 @@
       <p>{{x.body}}</p>
     </ion-item>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+ 
 </ion-content>

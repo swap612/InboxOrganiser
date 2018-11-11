@@ -4,7 +4,7 @@ import { ReminderPage } from './reminder';
 
 @NgModule({
   declarations: [
-    ReminderPage,
+    
   ],
   imports: [
     IonicPageModule.forChild(ReminderPage),
