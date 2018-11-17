@@ -37,11 +37,6 @@ export class HomePage {
       console.log("Error Device not ready");
     });
 
-    // this.turn =0;
-    // for (let i = 0; i < 30; i++) {
-    //   this.persMsg.push(smsservice.personalMsg[i] );
-    // }
-
   }
 
   checkPermission() {
@@ -64,6 +59,10 @@ export class HomePage {
       });
   }
 
+
+  /*
+  ReadSMSList -> Reads the SMS from inbox
+  */ 
   ReadSMSList() {
 
     let filter = {
@@ -98,7 +97,7 @@ export class HomePage {
         var smsFilter = this.messages[i];
         // console.log("" + smsFilter.address);
         var regexPersonal = /^\+[0-9]{10,}/;
-        var regexOther = /( missed call| missed calls|offer| from +)/i;
+        var regexOther = /(offer|offers)/i;
         var regexReminder = /( due by| due on| mticket| PNR)/i;
         var regexReminder2 = /^PNR/i;
 
