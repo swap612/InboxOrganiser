@@ -49,4 +49,9 @@ export class OtherPage {
       infiniteScroll.complete();
     }, 50);
   }
+  swipe(event) {
+    if(event.direction === 4) {
+      this.navCtrl.parent.select(2);
+    }
+  }
 }

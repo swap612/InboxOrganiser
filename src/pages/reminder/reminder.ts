@@ -30,6 +30,13 @@ export class ReminderPage {
       messageBody: body
     });
   }
-
+  swipe(event) {
+    if(event.direction === 4) {
+      this.navCtrl.parent.select(1);
+    }
+    if(event.direction === 2) {
+      this.navCtrl.parent.select(3);
+    }
+  }
 
 }

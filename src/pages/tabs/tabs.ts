@@ -19,11 +19,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   templateUrl: 'tabs.html',
 })
 export class TabsPage {
-
-  transactionPage = TransactionsPage;
+  
   personalPage = HomePage;
+  transactionPage = TransactionsPage;
+  reminderPage =ReminderPage; 
   otherPage = OtherPage;
-  reminderPage =ReminderPage;
+
   
 
   constructor(platform: Platform, splashScreen: SplashScreen) {

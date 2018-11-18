@@ -155,21 +155,9 @@ export class HomePage {
       messageBody: body
     });
   }
-
-  //
-  // doInfinite(infiniteScroll) {
-  //   console.log('Begin async operation');
-  //    this.turn++;
-  //    console.log('turn:'+this.turn);
-  //   setTimeout(() => {
-
-  //     for (let i = 0; i < 30; i++) {
-  //       this.persMsg.push(this.smsservice.personalMsg[30*this.turn+i] );
-  //     }
-
-  //     console.log('Async operation has ended');
-  //     infiniteScroll.complete();
-  //   }, 50);
-  // }
-
+  swipe(event) {
+    if(event.direction === 2) {
+      this.navCtrl.parent.select(1);
+    }
+  }
 }
